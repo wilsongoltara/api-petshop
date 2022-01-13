@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 const instancia = require('../../database');
 
-const coluns = {
+//Standard columns model 
+const columns = {
     "empresa": {
         type: Sequelize.STRING,
         allowNull: false
@@ -16,6 +17,7 @@ const coluns = {
     } 
 };
 
+//Standard options model 
 const options = {
     freezeTableName: true,
     tableName: 'fornecedores',
@@ -24,4 +26,4 @@ const options = {
     version: 'versao'
 };
 
-module.exports = instancia.define('fornecedor', coluns, options);
+module.exports = instancia.define('fornecedor', columns, options);
