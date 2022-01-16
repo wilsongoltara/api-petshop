@@ -4,12 +4,12 @@ const Provider = require('./Proveiders');
 
 router.get('/', async (_, response) => {
     const result = await TableProvider.list();
-    response.stauts(200).send(
+    response.status(200).send(
         JSON.stringify(result)
     );
 });
 
-router.post('/', async (request, response) => {
+router.post('/', async (request, response, next) => {
     try {
         const receivedData = request.body;
         const provider = new Provider(receivedData);
@@ -18,28 +18,24 @@ router.post('/', async (request, response) => {
             JSON.stringify(provider)
         );
     } catch(error) {
-        response.status(400).send(
-            JSON.stringify({ message: error.message })
-        );
+        next(error);
     }
 });
 
-router.get('/:idProvider', async (request, response) => {
+router.get('/:idProvider', async (request, response, next) => {
     try {
         const id = request.params.idProvider;
         const provider = new Provider({ id: id });
         await provider.load();
-        response.send(
+        response.status(200).send(
             JSON.stringify(provider)
         );
     } catch(error) {
-        response.status(404).send(
-            JSON.stringify({ message: error.message })
-        );
+        next(error);
     }
 });
 
-router.put('/:idProvider', async (request, response) => {
+router.put('/:idProvider', async (request, response, next) => {
     try {
         const id = request.params.idProvider;
         const receivedData = request.body;
@@ -48,13 +44,11 @@ router.put('/:idProvider', async (request, response) => {
         await provider.update();
         response.status(204).end()
     } catch(error) {
-        response.status(400).send(
-            JSON.stringify({ message: error.message })
-        );
+        next(error);
     }
 });
 
-router.delete('/:idProvider', async (request, response) => {
+router.delete('/:idProvider', async (request, response, next) => {
     try {
         const id = request.params.idProvider;
         const provider = new Provider({ id: id });
@@ -62,9 +56,7 @@ router.delete('/:idProvider', async (request, response) => {
         await provider.remove();
         response.status(204).end()
     } catch(error) {
-        response.status(404).send(
-            JSON.stringify({ message: error.message })
-        );
+        next(error);
     }
 });
 

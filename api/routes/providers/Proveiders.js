@@ -1,4 +1,6 @@
 const TableProvider = require('../providers/tableProvider');
+const InvalidFild = require('../../errors/InvalidFild');
+const NoDataFound = require('../../errors/NoDataFound');
 
 class Proveiders {
     constructor({ id, empresa, email, categoria, dataCriacao, dataAtualizacao, versao }) {
@@ -52,7 +54,7 @@ class Proveiders {
         });
 
         if(Object.keys(dataForUpdate).length === 0) {
-            throw new Error('No update data found!');
+            throw new NoDataFound();
         }
 
         await TableProvider.update(this.id, dataForUpdate);
@@ -73,7 +75,7 @@ class Proveiders {
             const value = this[fild];
             
             if(typeof(value) !== 'string' || value.length === 0) {
-                throw new Error(`The fild '${fild}' is not valid`);
+                throw new InvalidFild(fild);
             }
         });
     }

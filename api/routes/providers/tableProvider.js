@@ -1,11 +1,12 @@
 const ModelTable = require('./modelTableProvider');
+const NotFound = require('../../errors/NotFound');
 
 module.exports = {
     //return the results of method findAll()
     list() {
         return ModelTable.findAll();
     },
-
+    
     insert(provider) {
         return ModelTable.create(provider);
     },
@@ -16,7 +17,7 @@ module.exports = {
         });
         
         if(!found) {
-            throw new Error('Provider not found!');
+            throw new NotFound();
         }
         
         return found;
